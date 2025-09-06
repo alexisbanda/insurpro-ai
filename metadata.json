@@ -1,0 +1,5 @@
+{
+  "name": "InsurePro - AI-Powered Insurance Agency",
+  "description": "A modern, AI-enhanced landing page for an insurance agency. It provides personalized insurance recommendations, summarizes testimonials, and answers user questions using the Gemini API.",
+  "requestFramePermissions": []
+}
