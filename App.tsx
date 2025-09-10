@@ -2,9 +2,11 @@
 import React from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
+import TrustLogos from './components/TrustLogos';
 import HowItWorks from './components/HowItWorks';
 import Solutions from './components/Solutions';
 import ExpertGuide from './components/ExpertGuide';
+import About from './components/About';
 import Testimonials from './components/Testimonials';
 import AIFaq from './components/AIFaq';
 import QuoteForm from './components/QuoteForm';
@@ -17,9 +19,11 @@ const App: React.FC = () => {
       <Header />
       <main>
         <Hero />
+        <TrustLogos />
         <HowItWorks />
         <Solutions />
         <ExpertGuide />
+        <About />
         <Testimonials />
         <AIFaq />
         <QuoteForm />

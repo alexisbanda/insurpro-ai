@@ -7,6 +7,7 @@ import { NavLink } from '../types';
 const navLinks: NavLink[] = [
   { name: 'Cómo Funciona', href: '#how-it-works' },
   { name: 'Soluciones', href: '#solutions' },
+  { name: 'Sobre Mí', href: '#about' },
   { name: 'Testimonios', href: '#testimonials' },
   { name: 'FAQ con IA', href: '#faq' },
 ];
