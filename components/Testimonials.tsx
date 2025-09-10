@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { MessageSquare, LoaderCircle, Sparkles } from 'lucide-react';
 import SectionWrapper from './SectionWrapper';
 import { Testimonial } from '../types';
-import { summarizeTestimonials } from '../services/geminiService';
+// import { summarizeTestimonials } from '../services/geminiService';
 
 const testimonials: Testimonial[] = [
   {
@@ -28,17 +28,17 @@ const testimonials: Testimonial[] = [
 ];
 
 const Testimonials: React.FC = () => {
-  const [summary, setSummary] = useState('');
-  const [loading, setLoading] = useState(false);
+  // const [summary, setSummary] = useState('');
+  // const [loading, setLoading] = useState(false);
 
-  const handleSummarize = useCallback(async () => {
-    setLoading(true);
-    setSummary('');
-    const testimonialText = testimonials.map(t => t.quote).join('\n');
-    const result = await summarizeTestimonials(testimonialText);
-    setSummary(result);
-    setLoading(false);
-  }, []);
+  // const handleSummarize = useCallback(async () => {
+  //   setLoading(true);
+  //   setSummary('');
+  //   const testimonialText = testimonials.map(t => t.quote).join('\n');
+  //   const result = await summarizeTestimonials(testimonialText);
+  //   setSummary(result);
+  //   setLoading(false);
+  // }, []);
 
   return (
     <SectionWrapper id="testimonials" className="bg-gray-50">
@@ -61,6 +61,7 @@ const Testimonials: React.FC = () => {
           </div>
         ))}
       </div>
+      {/* Funcionalidad de resumen de IA deshabilitada temporalmente
       <div className="text-center mt-12">
         <button onClick={handleSummarize} disabled={loading} className="border border-blue-600 text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-blue-50 transition-all duration-300 disabled:opacity-50 flex items-center mx-auto">
           {loading ? (
@@ -84,9 +85,10 @@ const Testimonials: React.FC = () => {
           <h3 className="font-bold text-lg text-gray-800 mb-2">Temas Clave de los Comentarios de Clientes:</h3>
           <div className="text-gray-700 whitespace-pre-wrap">{summary}</div>
         </motion.div>
-      )}
+      )} */}
     </SectionWrapper>
   );
 };
+
 
 export default Testimonials;

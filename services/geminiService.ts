@@ -1,42 +1,49 @@
-
-import { GoogleGenAI } from "@google/genai";
-
-const apiKey = process.env.API_KEY;
-
-if (!apiKey) {
-  console.warn("API_KEY environment variable not set. AI features will be disabled.");
-}
-
-const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
-const model = "gemini-2.5-flash";
-
-const callGeminiAPI = async (prompt: string): Promise<string> => {
-  if (!ai) {
-    return "El servicio de IA no está configurado. Falta la clave de API.";
-  }
+export const getInsuranceRecommendation = async (situation: string): Promise<string> => {
   try {
-    const response = await ai.models.generateContent({
-      model: model,
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
+    const response = await fetch('/.netlify/functions/get-insurance-recommendation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ situation }),
     });
-    return response.text;
-  } catch (error) {
-    console.error("Error calling Gemini API:", error);
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Hubo un problema al obtener la recomendación.');
+    }
+
+    const data = await response.json();
+    return data.recommendation;
+
+  } catch (error: any) {
+    console.error("Error calling get-insurance-recommendation function:", error);
+    return "Lo siento, no pude generar una recomendación en este momento.";
+  }
+};
+
+/**
+ * Llama a la función Netlify para obtener una respuesta del asistente de IA para el FAQ.
+ * @param question La pregunta del usuario.
+ * @returns La respuesta de la IA.
+ */
+export const answerFaqQuestion = async (question: string): Promise<string> => {
+  try {
+    const response = await fetch('/.netlify/functions/ask-faq', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Error from ask-faq function:", errorData.error);
+      throw new Error(errorData.error || 'Hubo un problema al obtener la respuesta.');
+    }
+
+    const data = await response.json();
+    return data.answer;
+
+  } catch (error: any) {
+    console.error("Error calling ask-faq function:", error);
     return "Lo siento, estoy teniendo problemas para conectarme al servicio de IA en este momento. Por favor, inténtalo de nuevo más tarde.";
   }
-};
-
-export const getInsuranceRecommendation = async (situation: string): Promise<string> => {
-  const prompt = `Eres un asesor de seguros experto. Un cliente potencial ha descrito su situación como: "${situation}". Basado en esto, ¿qué tipo de seguro (Vida, Hogar, Auto o Negocios) sería más importante que considerara primero? Proporciona una recomendación breve y amigable y explica tu razonamiento en 2-3 frases. Comienza tu respuesta con el tipo de seguro recomendado en negrita (ej., **Seguro de Vida**).`;
-  return callGeminiAPI(prompt);
-};
-
-export const summarizeTestimonials = async (testimonialText: string): Promise<string> => {
-  const prompt = `Eres un asistente útil. Por favor, lee los siguientes testimonios de clientes y proporciona un resumen breve con viñetas de los temas positivos clave. Céntrate en aspectos como la simplicidad, el equipo experto, los ahorros y el buen servicio. Los testimonios son:\n\n${testimonialText}`;
-  return callGeminiAPI(prompt);
-};
-
-export const answerFaqQuestion = async (question: string): Promise<string> => {
-  const prompt = `Eres un asistente de IA para una compañía de seguros llamada InsurePro. Responde la siguiente pregunta de manera clara, amigable y concisa. La pregunta es: "${question}"`;
-  return callGeminiAPI(prompt);
 };
