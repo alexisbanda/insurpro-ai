@@ -24,9 +24,9 @@ const App: React.FC = () => {
         <Solutions />
         <ExpertGuide />
         <About />
+        <QuoteForm />
         <Testimonials />
         <AIFaq />
-        <QuoteForm />
         <Contact />
       </main>
       <Footer />

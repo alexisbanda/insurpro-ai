@@ -1,67 +1,93 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Phone, Menu, X } from 'lucide-react';
+import { Shield, Menu, X, Sparkles, HelpCircle } from 'lucide-react';
 import { NavLink } from '../types';
 
 const navLinks: NavLink[] = [
-  { name: 'Cómo Funciona', href: '#how-it-works' },
   { name: 'Soluciones', href: '#solutions' },
+  { name: 'Cómo Funciona', href: '#how-it-works' },
   { name: 'Sobre Mí', href: '#about' },
   { name: 'Testimonios', href: '#testimonials' },
-  { name: 'FAQ con IA', href: '#faq' },
 ];
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const headerClasses = `fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-lg shadow-md' : 'bg-transparent'}`;
+  const linkClasses = `font-medium transition-colors duration-300 ${scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'}`;
+  const logoClasses = `transition-colors duration-300 ${scrolled ? 'text-gray-900' : 'text-white'}`;
 
   return (
-    <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+    <header className={headerClasses}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <a href="#" className="flex items-center space-x-2 text-2xl font-bold text-blue-600">
+          <motion.a 
+            href="#" 
+            className="flex items-center space-x-2 text-2xl font-bold text-blue-600"
+            whileHover={{ scale: 1.05 }}
+          >
             <Shield size={28} />
-            <span>Diego Vinueza</span>
-          </a>
-          <nav className="hidden md:flex items-center space-x-8">
+            <span className={logoClasses}>InsurePro AI</span>
+          </motion.a>
+          
+          <nav className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
-              <a key={link.name} href={link.href} className="text-gray-600 hover:text-blue-600 transition-colors duration-300 font-medium">
+              <motion.a key={link.name} href={link.href} className={linkClasses} whileHover={{ y: -2 }}>
                 {link.name}
-              </a>
+              </motion.a>
             ))}
+            <motion.a href="#faq" className={`${linkClasses} flex items-center gap-1.5`} whileHover={{ y: -2 }}>
+              <HelpCircle size={18} />
+              <span>FAQ con IA</span>
+            </motion.a>
           </nav>
-          <div className="hidden md:flex items-center space-x-4">
-            <a href="#contact" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 font-medium flex items-center space-x-2">
-              <Phone size={18} />
-              <span>(555) 123-4567</span>
-            </a>
-            <a href="#quote" className="bg-blue-600 text-white px-5 py-2.5 rounded-full font-semibold hover:bg-blue-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-              Obtener Cotización
-            </a>
+
+          <div className="hidden md:flex items-center">
+            <motion.a 
+              href="#quote" 
+              className="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition-all duration-300 shadow-md hover:shadow-lg flex items-center gap-2 ring-2 ring-blue-400 hover:ring-blue-500 ring-offset-2 ring-offset-transparent"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Sparkles size={20} />
+              Cotización Inteligente
+            </motion.a>
           </div>
+
           <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-gray-600 hover:text-blue-600">
+            <button onClick={() => setIsOpen(!isOpen)} className={`${scrolled ? 'text-gray-700' : 'text-white'} z-10`}>
               {isOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
           </div>
         </div>
       </div>
+
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-t border-gray-200"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="md:hidden absolute top-0 left-0 right-0 pt-20 bg-white shadow-lg"
           >
             <div className="px-4 pt-2 pb-4 space-y-2">
-              {navLinks.map((link) => (
+              {[...navLinks, { name: 'FAQ con IA', href: '#faq' }].map((link) => (
                 <a key={link.name} href={link.href} onClick={() => setIsOpen(false)} className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50">
                   {link.name}
                 </a>
               ))}
-              <a href="#quote" onClick={() => setIsOpen(false)} className="block w-full text-left bg-blue-600 text-white mt-2 px-4 py-3 rounded-md font-semibold hover:bg-blue-700 transition-colors duration-300">
-                Obtener Cotización
+              <a href="#quote" onClick={() => setIsOpen(false)} className="block w-full text-center bg-blue-600 text-white mt-4 px-4 py-3 rounded-md font-semibold hover:bg-blue-700 transition-colors duration-300 flex items-center justify-center gap-2">
+                <Sparkles size={20} />
+                Cotización Inteligente
               </a>
             </div>
           </motion.div>

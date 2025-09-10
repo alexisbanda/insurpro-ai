@@ -1,16 +1,16 @@
 
 import React, { useState, useCallback } from 'react';
-import { LifeBuoy, Home, Car, Briefcase, Sparkles } from 'lucide-react';
+import { LifeBuoy, Home, Car, Briefcase, Sparkles, ArrowRight } from 'lucide-react';
 import SectionWrapper from './SectionWrapper';
 import AIAdvisorModal from './AIAdvisorModal';
 import { Solution } from '../types';
 import { getInsuranceRecommendation } from '../services/geminiService';
 
 const solutions: Solution[] = [
-  { icon: <LifeBuoy size={40} className="text-white"/>, title: 'Seguro de Vida', description: 'Protege el futuro de tu familia con planes de seguro de vida integrales.' },
-  { icon: <Home size={40} className="text-white"/>, title: 'Seguro de Hogar', description: 'Asegura tu hogar y pertenencias contra imprevistos.' },
-  { icon: <Car size={40} className="text-white"/>, title: 'Seguro de Auto', description: 'Obtén una cobertura de auto confiable que te mantenga seguro en la carretera.' },
-  { icon: <Briefcase size={40} className="text-white"/>, title: 'Seguro de Negocios', description: 'Soluciones de seguro personalizadas para proteger los activos de tu empresa.' },
+  { icon: <LifeBuoy size={36} />, title: 'Seguro de Vida', description: 'Garantiza la seguridad financiera de tus seres queridos. Un acto de amor que perdura.' },
+  { icon: <Home size={36} />, title: 'Seguro de Hogar', description: 'Tu hogar es tu refugio. Protégelo contra todo riesgo y vive con total tranquilidad.' },
+  { icon: <Car size={36} />, title: 'Seguro de Auto', description: 'Conduce con confianza. Te cubrimos en cada kilómetro de tu viaje.' },
+  { icon: <Briefcase size={36} />, title: 'Seguro para Empresas', description: 'Blindamos tu negocio para que puedas enfocarte en crecer sin preocupaciones.' },
 ];
 
 const Solutions: React.FC = () => {
@@ -21,30 +21,35 @@ const Solutions: React.FC = () => {
   }, []);
 
   return (
-    <SectionWrapper id="solutions" className="bg-gray-50">
+    <SectionWrapper id="solutions" className="bg-white">
       <div className="text-center">
-        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">Soluciones de Seguros para Cada Necesidad</h2>
-        <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">Ofrecemos una amplia gama de productos de seguros adaptados a tus requisitos específicos.</p>
+        <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight">Tu Seguro Ideal, a un Clic</h2>
+        <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
+          Explora nuestras coberturas diseñadas para ti o deja que nuestra IA encuentre la póliza perfecta para tu momento de vida.
+        </p>
       </div>
-      <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {solutions.map((solution, index) => (
-          <div key={index} className="group relative p-8 bg-white rounded-2xl shadow-lg overflow-hidden text-center transform hover:-translate-y-2 transition-transform duration-300">
-            <div className="absolute inset-0 bg-blue-600 transform -translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out"></div>
-            <div className="relative z-10">
-              <div className="flex justify-center items-center mb-6 w-24 h-24 bg-blue-600 rounded-full mx-auto group-hover:bg-white transition-colors duration-500">
-                <div className="transform group-hover:text-blue-600 transition-colors duration-500">
-                  {solution.icon}
-                </div>
+          <div key={index} className="group relative p-8 bg-gray-50 rounded-2xl shadow-sm hover:shadow-2xl overflow-hidden text-center transform hover:-translate-y-2 transition-all duration-400 ease-in-out">
+            <div className="relative z-10 flex flex-col items-center">
+              <div className="flex justify-center items-center mb-6 w-20 h-20 bg-blue-100 text-blue-600 rounded-full transition-all duration-400 group-hover:bg-blue-600 group-hover:text-white group-hover:scale-110">
+                {solution.icon}
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 group-hover:text-white transition-colors duration-500">{solution.title}</h3>
-              <p className="mt-2 text-gray-600 group-hover:text-blue-100 transition-colors duration-500">{solution.description}</p>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">{solution.title}</h3>
+              <p className="text-gray-600 mb-6 h-24">{solution.description}</p>
+              <a href="#" className="font-semibold text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-center">
+                Ver más <ArrowRight className="ml-2 h-4 w-4" />
+              </a>
             </div>
           </div>
         ))}
       </div>
-      <div className="text-center mt-12">
-        <button onClick={() => setIsModalOpen(true)} className="bg-blue-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center mx-auto">
-          <Sparkles className="mr-2" /> Ayúdame a Elegir
+      <div className="text-center mt-20">
+        <button 
+          onClick={() => setIsModalOpen(true)} 
+          className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-10 py-5 rounded-full font-bold text-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-2xl transform hover:-translate-y-1.5 flex items-center mx-auto"
+        >
+          <Sparkles className="mr-3" /> Asesoría IA Gratuita
         </button>
       </div>
       <AIAdvisorModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onGetRecommendation={handleGetRecommendation} />
