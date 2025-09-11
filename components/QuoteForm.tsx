@@ -195,6 +195,9 @@ const QuoteForm: React.FC = () => {
     setError(null);
 
     try {
+      // Simular un poco de retraso para que la animación sea visible
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
       const response = await fetch('/.netlify/functions/get-intelligent-quote', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -247,6 +250,24 @@ const QuoteForm: React.FC = () => {
         const currentWizardData = wizardFlow[wizardStep];
 
         if (isWizardFinished) {
+          if (isSubmitting) {
+            return (
+              <motion.div key="submitting" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center">
+                <Bot size={48} className="text-blue-500 animate-bounce mx-auto" />
+                <h3 className="text-2xl font-bold text-gray-800 mt-4">Analizando tus respuestas...</h3>
+                <p className="text-gray-500 mt-2">Nuestra IA está procesando tu información para darte la mejor recomendación.</p>
+                <div className="w-full bg-gray-200 rounded-full h-1.5 mt-8 overflow-hidden">
+                  <motion.div
+                    className="bg-blue-500 h-1.5 rounded-full"
+                    initial={{ x: "-100%" }}
+                    animate={{ x: "100%" }}
+                    transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+                  />
+                </div>
+              </motion.div>
+            );
+          }
+
           return (
             <motion.div key="summary" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }}>
               <div className="text-center">
@@ -389,7 +410,7 @@ const QuoteForm: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="bg-white p-8 rounded-2xl shadow-2xl min-h-[520px] flex flex-col justify-center">
+        <div className={`bg-white p-8 rounded-2xl shadow-2xl min-h-[520px] flex flex-col justify-center transition-all duration-500 ${isSubmitting ? 'shadow-blue-500/30 shadow-[-5px_5px_60px_10px,5px_-5px_60px_10px]' : ''}`}>
           {step < 3 && (
             <div className="flex items-center mb-6">
               {step > 1 && (
