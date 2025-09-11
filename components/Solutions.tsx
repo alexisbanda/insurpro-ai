@@ -1,10 +1,13 @@
-
 import React, { useState, useCallback } from 'react';
 import { LifeBuoy, Home, Car, Briefcase, Sparkles, ArrowRight } from 'lucide-react';
 import SectionWrapper from './SectionWrapper';
 import AIAdvisorModal from './AIAdvisorModal';
 import { Solution } from '../types';
 import { getInsuranceRecommendation } from '../services/geminiService';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 const solutions: Solution[] = [
   { icon: <LifeBuoy size={36} />, title: 'Seguro de Vida', description: 'Garantiza la seguridad financiera de tus seres queridos. Un acto de amor que perdura.' },
@@ -28,21 +31,40 @@ const Solutions: React.FC = () => {
           Explora nuestras coberturas diseñadas para ti o deja que nuestra IA encuentre la póliza perfecta para tu momento de vida.
         </p>
       </div>
-      <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        {solutions.map((solution, index) => (
-          <div key={index} className="group relative p-8 bg-gray-50 rounded-2xl shadow-sm hover:shadow-2xl overflow-hidden text-center transform hover:-translate-y-2 transition-all duration-400 ease-in-out">
-            <div className="relative z-10 flex flex-col items-center">
-              <div className="flex justify-center items-center mb-6 w-20 h-20 bg-blue-100 text-blue-600 rounded-full transition-all duration-400 group-hover:bg-blue-600 group-hover:text-white group-hover:scale-110">
-                {solution.icon}
+      <div className="mt-20">
+        <Swiper
+          modules={[Pagination]}
+          spaceBetween={30}
+          slidesPerView={1.2}
+          pagination={{ clickable: true }}
+          className="pb-12"
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+            },
+            1024: {
+              slidesPerView: 4,
+              spaceBetween: 40,
+            },
+          }}
+        >
+          {solutions.map((solution, index) => (
+            <SwiperSlide key={index} className="h-full">
+              <div className="group relative p-8 bg-gray-50 rounded-2xl shadow-sm hover:shadow-2xl overflow-hidden text-center transform hover:-translate-y-2 transition-all duration-400 ease-in-out h-full flex flex-col">
+                <div className="relative z-10 flex flex-col items-center flex-grow">
+                  <div className="flex justify-center items-center mb-6 w-20 h-20 bg-blue-100 text-blue-600 rounded-full transition-all duration-400 group-hover:bg-blue-600 group-hover:text-white group-hover:scale-110">
+                    {solution.icon}
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">{solution.title}</h3>
+                  <p className="text-gray-600 mb-6 flex-grow">{solution.description}</p>
+                  <a href="#" className="font-semibold text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-center mt-auto">
+                    Ver más <ArrowRight className="ml-2 h-4 w-4" />
+                  </a>
+                </div>
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">{solution.title}</h3>
-              <p className="text-gray-600 mb-6 h-24">{solution.description}</p>
-              <a href="#" className="font-semibold text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-center">
-                Ver más <ArrowRight className="ml-2 h-4 w-4" />
-              </a>
-            </div>
-          </div>
-        ))}
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
       <div className="text-center mt-20">
         <button 
