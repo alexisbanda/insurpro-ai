@@ -35,7 +35,7 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <style jsx global>{`
+      <style>{`
         @keyframes pulse-glow {
           0%, 100% {
             box-shadow: 0 0 20px 0px rgba(59, 130, 246, 0.4);

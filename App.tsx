@@ -5,6 +5,7 @@ import Hero from './components/Hero';
 import TrustLogos from './components/TrustLogos';
 import HowItWorks from './components/HowItWorks';
 import Solutions from './components/Solutions';
+import QuoteCalculator from './components/QuoteCalculator';
 import ExpertGuide from './components/ExpertGuide';
 import About from './components/About';
 import Testimonials from './components/Testimonials';
@@ -22,6 +23,7 @@ const App: React.FC = () => {
         <TrustLogos />
         <HowItWorks />
         <Solutions />
+        <QuoteCalculator />
         <ExpertGuide />
         <About />
         <QuoteForm />
