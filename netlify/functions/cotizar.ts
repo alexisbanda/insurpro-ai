@@ -17,15 +17,15 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
       return { statusCode: 400, body: JSON.stringify({ message: "Cuerpo de la solicitud ausente." }) };
     }
 
-    const { dateOfBirth, gender, faceAmount, paymentMode } = JSON.parse(event.body);
+    const { dateOfBirth, gender, faceAmount, paymentMode, product_item, locations } = JSON.parse(event.body);
 
-    if (!dateOfBirth || !gender || !faceAmount || !paymentMode) {
+    if (!dateOfBirth || !gender || !faceAmount || !paymentMode || product_item === undefined || locations === undefined) {
       return { statusCode: 400, body: JSON.stringify({ message: "Faltan campos obligatorios en la solicitud." }) };
     }
 
     const payload = {
       quote_type: "SINGLE_INDEPENDENT",
-      locations: "ALL_PROVINCES",
+      locations: locations,
       face_amount: faceAmount,
       client_gender: gender,
       country_code: "CA",
@@ -34,7 +34,7 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
       filter: "DISPLAY_ALL_PRODUCTS",
       payment_mode: paymentMode,
       product_group: 0,
-      product_item: 8,
+      product_item: product_item,
       report_type: "RANK_SURVEY",
       tabaco_types: {},
       underwriting_risk: "REGULAR",
